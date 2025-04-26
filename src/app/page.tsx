@@ -1,103 +1,168 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star } from 'lucide-react';
+
+const quickActions = [
+  {
+    name: 'Take Photo',
+    description: 'Capture new dental images',
+    href: '/camera',
+    icon: Camera,
+    color: 'bg-blue-500',
+  },
+  {
+    name: 'Book Appointment',
+    description: 'Schedule your next visit',
+    href: '/appointments',
+    icon: Calendar,
+    color: 'bg-green-500',
+  },
+  {
+    name: 'Chat with AI',
+    description: 'Get instant dental advice',
+    href: '/smilechat',
+    icon: MessageSquare,
+    color: 'bg-purple-500',
+  },
+];
+
+const stats = [
+  {
+    name: 'Total Scans',
+    value: '156',
+    change: '+12%',
+    trend: 'up',
+    icon: Activity,
+  },
+  {
+    name: 'Dentist Network',
+    value: '50+',
+    change: '+5',
+    trend: 'up',
+    icon: Users,
+  },
+  {
+    name: 'Patient Rating',
+    value: '4.9',
+    change: '+0.2',
+    trend: 'up',
+    icon: Star,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="space-y-8">
+      {/* Welcome Section */}
+      <div className="card">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-neutral-900">
+              Welcome back, Dr. Smith
+            </h1>
+            <p className="mt-1 text-neutral-500">
+              Here's what's happening with your dental practice today.
+            </p>
+          </div>
+          <Link href="/settings" className="btn btn-primary">
+            View Settings
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid gap-6 md:grid-cols-3">
+        {stats.map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <div key={stat.name} className="card">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-neutral-500">
+                    {stat.name}
+                  </p>
+                  <div className="mt-1 flex items-baseline">
+                    <p className="text-2xl font-semibold text-neutral-900">
+                      {stat.value}
+                    </p>
+                    <p className="ml-2 text-sm font-medium text-success-600">
+                      {stat.change}
+                    </p>
+                  </div>
+                </div>
+                <div className="rounded-full bg-neutral-100 p-3">
+                  <Icon className="h-5 w-5 text-neutral-600" />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Quick Actions */}
+      <div className="space-y-4">
+        <h2 className="text-lg font-semibold text-neutral-900">
+          Quick Actions
+        </h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {quickActions.map((action) => {
+            const Icon = action.icon;
+            return (
+              <Link
+                key={action.name}
+                href={action.href}
+                className="group relative overflow-hidden rounded-lg border border-neutral-200 bg-white p-6 hover:border-neutral-300 hover:shadow-md transition-all duration-200"
+              >
+                <div className="flex justify-between">
+                  <div>
+                    <div className={`inline-flex rounded-lg ${action.color} p-3`}>
+                      <Icon className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="mt-4 text-base font-semibold text-neutral-900">
+                      {action.name}
+                    </h3>
+                    <p className="mt-1 text-sm text-neutral-500">
+                      {action.description}
+                    </p>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-neutral-400 group-hover:text-neutral-900 transition-colors" />
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-neutral-900">
+            Recent Activity
+          </h2>
+          <Link href="/activity" className="text-sm text-primary-600 hover:text-primary-700">
+            View all
+          </Link>
+        </div>
+        <div className="card divide-y divide-neutral-200">
+          {[1, 2, 3].map((_, i) => (
+            <div key={i} className="flex items-center justify-between py-4 first:pt-0 last:pb-0">
+              <div className="flex items-center space-x-4">
+                <div className="h-10 w-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                  <Camera className="h-5 w-5 text-neutral-600" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-neutral-900">
+                    New dental scan uploaded
+                  </p>
+                  <p className="text-sm text-neutral-500">
+                    2 hours ago
+                  </p>
+                </div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-neutral-400" />
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
-}
+} 
