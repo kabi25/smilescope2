@@ -23,9 +23,9 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile Sidebar Toggle */}
-      <button
+           <button
         type="button"
-        className="md:hidden fixed top-4 left-4 z-50 btn btn-outline p-2"
+        className="lg:hidden fixed top-8 left-4 btn btn-outline p-2 "
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
       >
         {isSidebarOpen ? (
