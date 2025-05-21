@@ -60,7 +60,7 @@ export default function Home() {
               Welcome back, Dr. Smith
             </h1>
             <p className="mt-1 text-neutral-500">
-              Here's what's happening with your dental practice today.
+              Here&apos;s what&apos;s happening with your dental practice today.
             </p>
           </div>
           <Link href="/settings" className="btn btn-primary">
@@ -165,4 +165,4 @@ export default function Home() {
       </div>
     </div>
   );
-} 
+}
