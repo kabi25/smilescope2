@@ -1,5 +1,10 @@
+'use client'
+
 import Link from 'next/link';
 import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const quickActions = [
   {
@@ -50,6 +55,14 @@ const stats = [
 ];
 
 export default function Home() {
+  const { user } = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!user) {
+      router.replace('/onboarding');
+    }
+  }, [user, router]);
+
   return (
     <div className="space-y-8">
       {/* Welcome Section */}

@@ -4,10 +4,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { User } from 'lucide-react';
 
 export default function AccountPage() {
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout, resetUser } = useAuth();
   const [formData, setFormData] = useState({
     username: user?.username || '',
     email: user?.email || '',
+    age: user?.age || '',
+    phone: user?.phone || '',
+    country: user?.country || '',
   });
   const [profilePicture, setProfilePicture] = useState(user?.profilePicture || '/default-avatar.png');
 
@@ -31,13 +34,13 @@ export default function AccountPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateUser(formData);
+    updateUser({ ...formData, profilePicture });
   };
 
   return (
     <main className="min-h-screen p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Account Settings</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Account Setting</h1>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center">
@@ -66,7 +69,7 @@ export default function AccountPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                Username
+                Name
               </label>
               <input
                 type="text"
@@ -78,7 +81,20 @@ export default function AccountPage() {
                 required
               />
             </div>
-
+            <div>
+              <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+                Age
+              </label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                value={formData.age}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                required
+              />
+            </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email Address
@@ -93,6 +109,34 @@ export default function AccountPage() {
                 required
               />
             </div>
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                Country
+              </label>
+              <input
+                type="text"
+                id="country"
+                name="country"
+                value={formData.country}
+                onChange={handleInputChange}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                required
+              />
+            </div>
           </div>
 
           <button
@@ -101,6 +145,22 @@ export default function AccountPage() {
           >
             Save Changes
           </button>
+          <div className="flex justify-between mt-4">
+            <button
+              type="button"
+              onClick={logout}
+              className="py-2 px-4 rounded-md text-sm font-medium text-white bg-gray-500 hover:bg-gray-600"
+            >
+              Log Out
+            </button>
+            <button
+              type="button"
+              onClick={resetUser}
+              className="py-2 px-4 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600"
+            >
+              Reset Account
+            </button>
+          </div>
         </form>
       </div>
     </main>
