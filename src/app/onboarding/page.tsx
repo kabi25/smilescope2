@@ -142,6 +142,6 @@ export default function OnboardingPage() {
 
 // Disable the root layout (and sidebar) for onboarding
 export const dynamic = 'force-static'; // Optional: disables SSR for onboarding
-export default function layout({ children }: { children: React.ReactNode }) {
+export function layout({ children }: { children: React.ReactNode }) {
   return children;
 } 
