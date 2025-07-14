@@ -51,19 +51,16 @@ export default function Sidebar() {
       >
         {/* Logo */}
         <div className="flex h-16 items-center border-b border-neutral-200 px-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="relative h-8 w-8">
+          <Link href="/" className="flex items-center w-full">
+            <div className="relative h-16 w-full">
               <Image
-                src="/logo.svg"
+                src="/smilescope.jpeg"
                 alt="Smilescope Logo"
                 fill
                 className="object-contain"
                 priority
               />
             </div>
-            <span className="text-lg font-semibold text-neutral-900">
-              Smilescope
-            </span>
           </Link>
         </div>
 
