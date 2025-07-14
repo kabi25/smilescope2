@@ -3,10 +3,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const metadata = {
-  title: 'Onboarding - Smilescope',
-};
-
 export default function OnboardingPage() {
   const { updateUser } = useAuth();
   const router = useRouter();
@@ -138,10 +134,4 @@ export default function OnboardingPage() {
       </form>
     </main>
   );
-}
-
-// Disable the root layout (and sidebar) for onboarding
-export const dynamic = 'force-static'; // Optional: disables SSR for onboarding
-export function layout({ children }: { children: React.ReactNode }) {
-  return children;
 } 
