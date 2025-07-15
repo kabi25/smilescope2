@@ -18,14 +18,14 @@ function LayoutWithAuthCheck({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (!user) {
-      router.replace('/onboarding');
-    }
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.replace('/');
+  //   }
+  // }, [user, router]);
   return (
     <div className="flex min-h-screen bg-neutral-50">
-{pathname !== '/onboarding' && <Sidebar />}
+<Sidebar />
       <main className="flex-1 md:ml-64">
         <div className="container mx-auto px-4 py-8">
           <div className="animate-fade-in">

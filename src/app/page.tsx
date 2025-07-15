@@ -57,11 +57,11 @@ const stats = [
 export default function Home() {
   const { user } = useAuth();
   const router = useRouter();
-  useEffect(() => {
-    if (!user) {
-      router.replace('/onboarding');
-    }
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.replace('/');
+  //   }
+  // }, [user, router]);
 
   return (
     <div className="space-y-8">
