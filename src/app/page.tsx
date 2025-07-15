@@ -90,13 +90,13 @@ export default function Home() {
     setTip(dentalTips[Math.floor(Math.random() * dentalTips.length)]);
   }, []);
 
-  useEffect(() => {
-    if (mounted && !user) {
-      router.replace('/onboarding');
-    }
-  }, [user, router, mounted]);
+  // useEffect(() => {
+  //   if (mounted && !user) {
+  //     router.replace('/onboarding');
+  //   }
+  // }, [user, router, mounted]);
 
-  if (!mounted || !selectedDate) return null;
+  // if (!mounted || !selectedDate) return null;
 
   function tileClassName({ date, view }: { date: Date; view: string }) {
     if (view === 'month') {

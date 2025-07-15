@@ -16,9 +16,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
 function LayoutNoAuthCheck({ children, collapsed, setCollapsed }: { children: React.ReactNode, collapsed: boolean, setCollapsed: (c: boolean) => void }) {
   const pathname = usePathname();
+
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.replace('/');
+  //   }
+  // }, [user, router]);
   return (
     <div className={`app-container ${collapsed ? 'collapsed' : 'expanded'} flex min-h-screen bg-neutral-50 transition-all duration-300`}>
-      {pathname !== '/onboarding' && <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />}
+       <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
       <main className="main-content flex-grow transition-all duration-300" style={{ marginLeft: pathname !== '/onboarding' ? (collapsed ? 80 : 250) : 0, padding: 0 }}>
         <div className="container mx-auto px-0 py-0">
           <div className="animate-fade-in">
