@@ -132,6 +132,15 @@ export default function OnboardingPage() {
           Get Started
         </button>
       </form>
+      <div className="w-full max-w-md mt-4 flex flex-col items-center">
+        <button
+          type="button"
+          className="w-full py-2 px-4 border border-blue-300 rounded-md shadow-sm text-sm font-medium text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-300"
+          onClick={() => router.replace('/')}
+        >
+          Continue without logging in
+        </button>
+      </div>
     </main>
   );
 } 

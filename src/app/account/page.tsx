@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { User } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AccountPage() {
   const { user, updateUser, logout, resetUser } = useAuth();

@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export default function OffersPage() {
   return (
     <main className="min-h-screen p-4 md:p-8">

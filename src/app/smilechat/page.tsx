@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, Image as ImageIcon, Camera, FileText, Calendar, Info, X, Upload, Bot, User } from 'lucide-react';
 import { analyzeDentalImage, generateAnalysisMessage, generateActionButtons } from '@/lib/image-analysis';
+import Image from 'next/image';
 
 interface Message {
   id: string;

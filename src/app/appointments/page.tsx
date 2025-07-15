@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar, Clock, User, Phone, Mail, MessageSquare, AlertCircle, CheckCircle } from 'lucide-react';
+import Image from 'next/image';
 
 interface AppointmentForm {
   name: string;
@@ -12,6 +13,74 @@ interface AppointmentForm {
   reason: string;
   urgency: 'low' | 'medium' | 'high';
   notes: string;
+}
+
+interface Clinic {
+  id: string;
+  name: string;
+  hours: string;
+  address: string;
+  logo: string;
+  services: string[];
+}
+
+const clinics: Clinic[] = [
+  {
+    id: 'alpha',
+    name: 'Alpha Dental Specialists Centre/Pusat Pakar Pergigian Alpha Dental',
+    hours: 'Mon-Sun 9AM - 6PM',
+    address: '7 (Ground Floor), Jalan Serampang, Taman Sri Tebrau, 80050 Johor Bahru, Johor.',
+    logo: '/alpha-dental-logo.jpg',
+    services: [
+      'Braces by Specialist',
+      'Clear Aligner Invisalign by Specialist',
+      'Root Canal Treatment by Specialist',
+      'Gum Treatment',
+      '3D Intraoral Scanning',
+      'Same-Day Crown by Specialist',
+      'Ceramic Crown & Bridge by Specialist',
+      'Veneers by Specialist',
+      'Teeth Whitening',
+      'Minor Oral Surgery',
+      'Wisdom Tooth Surgery',
+      'Dentures by Specialist',
+      'Dental Implant by Specialist',
+      'Laser Treatment',
+      'Children Dentistry',
+      'Preventive Treatment',
+      'Tooth Filling',
+      'Scaling & Polishing',
+      'Tooth Extraction',
+    ],
+  },
+  {
+    id: 'smilecv',
+    name: 'SmileCV Dental Clinic',
+    hours: 'Sunday- Friday 8AM - 7PM\nSaturdays and Public Holidays are closed',
+    address: '100, St Mary Street, Convent, 81100 Johor Bahru, Johor.',
+    logo: '/smilecv-logo.jpg',
+    services: [
+      'Teeth Whitening',
+      'Minor Oral Surgery',
+      'Wisdom Tooth Surgery',
+      'Dentures by Specialist',
+      'Dental Implant by Specialist',
+      'Laser Treatment',
+      'Children Dentistry',
+      'Preventive Treatment',
+      'Tooth Filling',
+      'Scaling & Polishing',
+      'Tooth Extraction',
+    ],
+  },
+];
+
+function saveAppointment(date: string) {
+  const appointments = JSON.parse(localStorage.getItem('smilescope_appointments') || '[]');
+  if (!appointments.includes(date)) {
+    appointments.push(date);
+    localStorage.setItem('smilescope_appointments', JSON.stringify(appointments));
+  }
 }
 
 export default function AppointmentsPage() {
@@ -27,6 +96,8 @@ export default function AppointmentsPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(null);
+  const [selectedService, setSelectedService] = useState('');
 
   // Get URL parameters for pre-filled data from SmileChat
   useEffect(() => {
@@ -51,7 +122,13 @@ export default function AppointmentsPage() {
     await new Promise(resolve => setTimeout(resolve, 2000));
     
     setIsSubmitting(false);
+    saveAppointment(form.date); // Save to calendar
     setIsSubmitted(true);
+  };
+
+  const handleClinicSelect = (clinicId: string) => {
+    setSelectedClinic(clinics.find(c => c.id === clinicId) || null);
+    setSelectedService('');
   };
 
   const getUrgencyColor = (urgency: string) => {
@@ -72,32 +149,32 @@ export default function AppointmentsPage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-[#aedae8] flex items-center justify-center p-4 font-nunito">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+          <div className="w-16 h-16 bg-[#faf8c0] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg width="32" height="32" fill="none" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="#1c788c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="10" stroke="#1c788c" strokeWidth="2"/></svg>
           </div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Appointment Scheduled!</h2>
-          <p className="text-gray-600 mb-6">
-            Your appointment has been successfully scheduled. We'll send you a confirmation email with all the details.
+          <h2 className="text-2xl font-bold font-poppins text-[#1c788c] mb-2">Appointment Scheduled!</h2>
+          <p className="text-[#1c788c] mb-6 font-nunito">
+            Your appointment has been saved to the calendar.
           </p>
-          <div className="space-y-3 text-left bg-gray-50 p-4 rounded-lg">
+          <div className="space-y-3 text-left bg-[#aedae8] p-4 rounded-lg">
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Date:</span>
-              <span className="font-medium">{form.date}</span>
+              <span className="text-[#1c788c] font-inter">Date:</span>
+              <span className="font-bold font-poppins text-[#1c788c]">{form.date}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Time:</span>
-              <span className="font-medium">{form.time}</span>
+              <span className="text-[#1c788c] font-inter">Time:</span>
+              <span className="font-bold font-poppins text-[#1c788c]">{form.time}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-gray-600">Reason:</span>
-              <span className="font-medium">{form.reason}</span>
+              <span className="text-[#1c788c] font-inter">Reason:</span>
+              <span className="font-bold font-poppins text-[#1c788c]">{form.reason}</span>
             </div>
           </div>
           <button
             onClick={() => window.location.href = '/smilechat'}
-            className="mt-6 w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+            className="mt-6 w-full bg-[#1c788c] text-white py-3 px-4 rounded-lg font-poppins font-bold hover:bg-[#74a8bc] transition-colors"
           >
             Back to SmileChat
           </button>
@@ -109,14 +186,48 @@ export default function AppointmentsPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Book Appointment</h1>
-          <p className="text-gray-600">
-            Schedule your dental appointment with ease. We'll get back to you to confirm the details.
-          </p>
+        {/* Clinic Selection */}
+        <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {clinics.map(clinic => (
+            <div key={clinic.id} className={`border rounded-lg p-6 shadow-sm bg-white transition-all duration-200 flex flex-col items-center ${selectedClinic?.id === clinic.id ? 'ring-2 ring-blue-500' : ''}`}> 
+              <div className="w-24 h-24 mb-3 relative">
+                <Image src={clinic.logo} alt={clinic.name + ' logo'} fill style={{objectFit:'contain'}} className="rounded" />
+              </div>
+              <h2 className="text-xl font-bold mb-1 text-center">{clinic.name}</h2>
+              <div className="text-sm mb-2 text-center"><b>Address:</b> {clinic.address}</div>
+              <button
+                className={`mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition ${selectedClinic?.id === clinic.id ? 'opacity-70' : ''}`}
+                onClick={() => handleClinicSelect(clinic.id)}
+                disabled={selectedClinic?.id === clinic.id}
+              >
+                {selectedClinic?.id === clinic.id ? 'Selected' : 'Select'}
+              </button>
+              {/* Expanded details if selected */}
+              {selectedClinic?.id === clinic.id && (
+                <div className="w-full mt-4">
+                  <div className="text-sm mb-1"><b>Consultation Hours:</b> {clinic.hours}</div>
+                  <div className="mb-2">
+                    <b>Services:</b>
+                    <select
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-2 mt-1"
+                      value={selectedService}
+                      onChange={e => setSelectedService(e.target.value)}
+                      required
+                    >
+                      <option value="">Select a service</option>
+                      {clinic.services.map((service, idx) => (
+                        <option key={idx} value={service}>{service}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
 
+        {/* Show the rest of the form only if a clinic and service are selected */}
+        {selectedClinic && selectedService && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Appointment Form */}
           <div className="lg:col-span-2">
@@ -343,6 +454,7 @@ export default function AppointmentsPage() {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );
