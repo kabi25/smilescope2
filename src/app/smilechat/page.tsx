@@ -391,8 +391,8 @@ export default function SmileChatPage() {
       <div className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-12 h-12 rounded-full flex items-center justify-center bg-blue-500">
+              <img src="/smilechat logo.jpg" alt="SmileChat Logo" className="w-12 h-12 rounded-full object-cover" />
             </div>
             <div>
               <h1 className="text-lg font-semibold text-gray-900">SmileChat AI</h1>
@@ -434,7 +434,7 @@ export default function SmileChatPage() {
                   {message.type === 'user' ? (
                     <User className="w-4 h-4 text-white" />
                   ) : (
-                    <Bot className="w-4 h-4 text-gray-600" />
+                    <img src="/smilechat logo.jpg" alt="SmileChat Logo" className="w-8 h-8 rounded-full object-cover" />
                   )}
                 </div>
 
