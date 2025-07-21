@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { Trash2, ArrowLeft } from 'lucide-react';
 
 interface ScanHistory {
@@ -12,7 +12,7 @@ interface ScanHistory {
 }
 
 export default function ScanDetailPage({ params }: { params: { scanNumber: string } }) {
-  const { scanNumber } = use(params as unknown as Promise<{ scanNumber: string }>);
+  const { scanNumber } = params;
   const router = useRouter();
   const [scan, setScan] = useState<ScanHistory | null>(null);
   const [notFound, setNotFound] = useState(false);
