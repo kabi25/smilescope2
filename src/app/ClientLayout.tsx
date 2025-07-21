@@ -45,7 +45,7 @@ function SidebarWrapper({ collapsed, setCollapsed }: { collapsed: boolean; setCo
 }
 
 // SidebarExternal is a wrapper to allow passing collapsed/setCollapsed if needed
-function SidebarExternal({ collapsed, setCollapsed }: { collapsed: boolean; setCollapsed: (c: boolean) => void }) {
+function SidebarExternal({  setCollapsed }: { collapsed: boolean; setCollapsed: (c: boolean) => void }) {
   // Sidebar manages its own hover state, but we want to sync with layout
   // So we listen for mouse enter/leave and update collapsed state
   return <div onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)}><Sidebar /></div>;

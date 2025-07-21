@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Calendar, Clock, User, Phone, Mail, MessageSquare, AlertCircle, CheckCircle } from 'lucide-react';
+import {  AlertCircle, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -96,10 +96,7 @@ export default function AppointmentsPage() {
     urgency: 'low',
     notes: ''
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [selectedClinic, setSelectedClinic] = useState<Clinic | null>(null);
-  const [selectedService, setSelectedService] = useState('');
 
   // Get URL parameters for pre-filled data from SmileChat
   useEffect(() => {
@@ -115,39 +112,6 @@ export default function AppointmentsPage() {
       }));
     }
   }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    saveAppointment(form.date); // Save to calendar
-    setIsSubmitted(true);
-  };
-
-  const handleClinicSelect = (clinicId: string) => {
-    setSelectedClinic(clinics.find(c => c.id === clinicId) || null);
-    setSelectedService('');
-  };
-
-  const getUrgencyColor = (urgency: string) => {
-    switch (urgency) {
-      case 'high': return 'text-red-600 bg-red-50 border-red-200';
-      case 'medium': return 'text-yellow-600 bg-yellow-50 border-yellow-200';
-      default: return 'text-green-600 bg-green-50 border-green-200';
-    }
-  };
-
-  const getUrgencyIcon = (urgency: string) => {
-    switch (urgency) {
-      case 'high': return <AlertCircle className="w-4 h-4" />;
-      case 'medium': return <AlertCircle className="w-4 h-4" />;
-      default: return <CheckCircle className="w-4 h-4" />;
-    }
-  };
 
   if (isSubmitted) {
     return (

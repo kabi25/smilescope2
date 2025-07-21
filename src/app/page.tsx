@@ -1,7 +1,6 @@
 'use client'
 
-import Link from 'next/link';
-import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star, Laptop, Gamepad2, Gift } from 'lucide-react';
+import { Camera, Calendar, MessageSquare, Activity, Users, Star, Laptop } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -9,53 +8,6 @@ import Image from 'next/image';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-const quickActions = [
-  {
-    name: 'Take Photo',
-    description: 'Capture new dental images',
-    href: '/camera',
-    icon: Camera,
-    color: 'bg-blue-500',
-  },
-  {
-    name: 'Book Appointment',
-    description: 'Schedule your next visit',
-    href: '/appointments',
-    icon: Calendar,
-    color: 'bg-green-500',
-  },
-  {
-    name: 'Chat with AI',
-    description: 'Get instant dental advice',
-    href: '/smilechat',
-    icon: MessageSquare,
-    color: 'bg-purple-500',
-  },
-];
-
-const stats = [
-  {
-    name: 'Total Scans',
-    value: '156',
-    change: '+12%',
-    trend: 'up',
-    icon: Activity,
-  },
-  {
-    name: 'Dentist Network',
-    value: '50+',
-    change: '+5',
-    trend: 'up',
-    icon: Users,
-  },
-  {
-    name: 'Patient Rating',
-    value: '4.9',
-    change: '+0.2',
-    trend: 'up',
-    icon: Star,
-  },
-];
 
 const dentalTips = [
   "Brush your teeth twice a day for a healthy smile!",
@@ -171,7 +123,7 @@ export default function Home() {
               </button>
               {/* Smile's Note Card */}
               <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-default shadow-md p-0">
-                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
+                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE&quot;S NOTE</div>
                 <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
               </div>
             </div>

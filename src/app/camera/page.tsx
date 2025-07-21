@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Repeat, Image as ImageIcon, Settings, Monitor, Smartphone, Video, ChevronDown, Bot } from 'lucide-react';
-import Image from 'next/image';
+import { Camera, Repeat, Image as ImageIcon, Monitor, Smartphone, Video, ChevronDown, Bot } from 'lucide-react';
 
 interface CameraDevice {
   deviceId: string;
@@ -131,8 +130,6 @@ export default function CameraPage() {
     if (label.includes('front') || label.includes('user')) return <Smartphone className="h-4 w-4" />;
     return <Video className="h-4 w-4" />;
   };
-
-  const selectedDeviceInfo = availableDevices.find(device => device.deviceId === selectedDevice);
 
   return (
     <div className="min-h-screen bg-white p-6">
