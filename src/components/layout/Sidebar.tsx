@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Home, User, Settings, Camera, MessageSquare, Calendar, Gift, Info, Phone } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const navigationItems = [
   { name: 'Home', href: '/', icon: Home },

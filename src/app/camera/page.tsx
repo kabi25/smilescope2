@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Repeat, Image as ImageIcon, Monitor, Smartphone, Video, ChevronDown } from 'lucide-react';
+import { Camera, Repeat, Image as ImageIcon, Settings, Monitor, Smartphone, Video, ChevronDown, Bot } from 'lucide-react';
+import Image from 'next/image';
 
 interface CameraDevice {
   deviceId: string;

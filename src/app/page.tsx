@@ -1,10 +1,11 @@
 'use client'
 
-import { Camera } from 'lucide-react';
+import Link from 'next/link';
+import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star, Laptop, Gamepad2, Gift } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import 'react-calendar/dist/Calendar.css';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useContext } from 'react';
@@ -98,14 +99,16 @@ function isPastDate(date: Date) {
 
 export default function Home() {
   const { user } = useAuth();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
   const [tip, setTip] = useState('');
   // Get sidebar collapsed state from context or prop if available
-  // Remove: const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  // In the Smile's Note card, always show the label for now (or use a global context if you want dynamic behavior).
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   useEffect(() => {
+    setMounted(true);
     setSelectedDate(new Date());
     setAppointments(getAppointments());
     setTip(dentalTips[Math.floor(Math.random() * dentalTips.length)]);
@@ -129,11 +132,9 @@ export default function Home() {
     return '';
   }
 
-  function handleCalendarChange(value: Date | (Date | null)[] | null) {
+  function handleCalendarChange(value: Date | Date[] | null) {
     if (Array.isArray(value)) {
-      // react-calendar can return [Date | null, Date | null] for ranges
-      const firstDate = value.find((d): d is Date => d instanceof Date);
-      setSelectedDate(firstDate ?? new Date());
+      setSelectedDate(value[0] ?? new Date());
     } else if (value instanceof Date) {
       setSelectedDate(value);
     }
@@ -141,9 +142,6 @@ export default function Home() {
 
   const selectedDateStr = selectedDate ? toLocalDateString(selectedDate) : '';
   const bookingDetails = mounted && selectedDateStr ? getBookingDetails(selectedDateStr) : null;
-
-  // Placeholder for sidebar collapsed state (replace with context/prop if available)
-  const sidebarCollapsed = true; // Set to false to simulate expanded
 
   return (
     <div className="flex flex-row min-h-screen max-h-screen overflow-hidden bg-[#aedae8] font-nunito">
@@ -160,22 +158,25 @@ export default function Home() {
           </div>
           {/* Feature Grid */}
           <div className="w-full flex-1 flex items-center justify-center" style={{minHeight: '220px'}}>
-            <div className={`grid grid-cols-2 grid-rows-2 gap-4 place-items-center`}>
-              {/* AI Camera Card */}
-              <button onClick={() => router.push('/camera')} className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
-                <Camera size={48} className="text-white" />
+            <div className="grid grid-cols-2 grid-rows-2 gap-6 place-items-center">
+              {/* Teachable Machine Card */}
+              <a href="https://teachablemachine.withgoogle.com/models/gtpl7P1SP/" target="_blank" rel="noopener noreferrer" className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+                <Laptop size={36} className="mb-1 text-white" />
+                <span className="text-white font-bold mt-1">AI Model</span>
+              </a>
+              {/* Appointments Card */}
+              <button onClick={() => router.push('/appointments')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+                <Calendar size={36} className="mb-1 text-white" />
               </button>
-              {/* Smilescope Website Card */}
-              <a href="https://smilescopebiz.wixsite.com/smilescope-4" target="_blank" rel="noopener noreferrer" className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
-                <Laptop size={48} className="text-white" />
-              </a>
-              {/* Minigame Card */}
-              <a href="https://scratch.mit.edu/projects/1061926573" target="_blank" rel="noopener noreferrer" className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
-                <Gamepad2 size={48} className="text-white" />
-              </a>
+              {/* Camera Card (moved) */}
+              <button onClick={() => router.push('/camera')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+                <Camera size={36} className="mb-1 text-white" />
+              </button>
               {/* Smile's Note Card */}
-              <div className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-default shadow-md p-0`}>
-                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
+              <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-default shadow-md p-0">
+                {sidebarCollapsed && (
+                  <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
+                )}
                 <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
               </div>
             </div>
