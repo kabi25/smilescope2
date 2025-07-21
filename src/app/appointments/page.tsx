@@ -102,6 +102,7 @@ export default function AppointmentsPage() {
         reason: decodeURIComponent(reason),
         urgency: urgency || 'low'
       }));
+      setIsSubmitted(true);
     }
   }, []);
 

@@ -58,10 +58,10 @@ export default function Sidebar() {
             );
           })}
           <li>
-            <a href="/gallery" className={`flex items-center px-4 py-3 rounded-lg text-[#1c788c] hover:bg-[#aedae8] font-poppins font-bold text-base transition-colors duration-200 ${collapsed ? 'justify-center' : ''}`}>
+            <Link href="/gallery" className={`flex items-center px-4 py-3 rounded-lg text-[#1c788c] hover:bg-[#aedae8] font-poppins font-bold text-base transition-colors duration-200 ${collapsed ? 'justify-center' : ''}`}>
               <svg className="w-6 h-6 mr-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
               {!collapsed && <span>Gallery</span>}
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
