@@ -1,61 +1,11 @@
 'use client'
 
-import Link from 'next/link';
-import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star } from 'lucide-react';
+import { Camera } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-
-const quickActions = [
-  {
-    name: 'Take Photo',
-    description: 'Capture new dental images',
-    href: '/camera',
-    icon: Camera,
-    color: 'bg-blue-500',
-  },
-  {
-    name: 'Book Appointment',
-    description: 'Schedule your next visit',
-    href: '/appointments',
-    icon: Calendar,
-    color: 'bg-green-500',
-  },
-  {
-    name: 'Chat with AI',
-    description: 'Get instant dental advice',
-    href: '/smilechat',
-    icon: MessageSquare,
-    color: 'bg-purple-500',
-  },
-];
-
-const stats = [
-  {
-    name: 'Total Scans',
-    value: '156',
-    change: '+12%',
-    trend: 'up',
-    icon: Activity,
-  },
-  {
-    name: 'Dentist Network',
-    value: '50+',
-    change: '+5',
-    trend: 'up',
-    icon: Users,
-  },
-  {
-    name: 'Patient Rating',
-    value: '4.9',
-    change: '+0.2',
-    trend: 'up',
-    icon: Star,
-  },
-];
+import ReactCalendar from 'react-calendar';
 
 const dentalTips = [
   "Brush your teeth twice a day for a healthy smile!",
@@ -77,14 +27,11 @@ function getAppointments() {
 
 export default function Home() {
   const { user } = useAuth();
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
   const [tip, setTip] = useState('');
 
   useEffect(() => {
-    setMounted(true);
     setSelectedDate(new Date());
     setAppointments(getAppointments());
     setTip(dentalTips[Math.floor(Math.random() * dentalTips.length)]);
@@ -127,7 +74,7 @@ export default function Home() {
           </div>
           {/* Quote */}
           <div className="text-2xl md:text-3xl font-bold text-center mb-4 font-poppins text-[#1c788c]">
-            "A confident smile is the best accessory you can wear."
+          &quot;A confident smile is the best accessory you can wear&quot;
           </div>
           {/* Feature Grid */}
           <div className="w-full flex-1 grid grid-cols-2 grid-rows-2 gap-6 items-center justify-center p-2 md:p-4" style={{maxHeight: '420px'}}>
