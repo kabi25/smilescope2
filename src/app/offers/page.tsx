@@ -55,13 +55,12 @@ export default function OffersPage() {
         </div>
       </div>
       {showModal && (
-        <div className="fixed inset-0 bg-[#1c2a36]/60 flex items-center justify-center z-50">
-          <div className="bg-white rounded-[2.5rem] max-w-md w-full p-12 flex flex-col items-center relative shadow-2xl">
-            <button onClick={() => setShowModal(false)} className="absolute top-6 right-6 text-[#888] hover:text-[#444] text-3xl font-bold focus:outline-none" aria-label="Close">
-              &times;
-            </button>
-            <img src="/smilechat logo.jpg" alt="SmileChat Logo" className="w-40 h-40 mb-8 rounded-full object-cover" />
-            <div className="text-3xl font-bold text-black text-center font-poppins">Payment done <span role="img" aria-label="money">💸</span></div>
+        <div className="fixed inset-0 bg-black bg-opacity-20 flex items-center justify-center z-50">
+          <div className="bg-white rounded-3xl max-w-xs w-full p-8 flex flex-col items-center relative shadow-2xl">
+            <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-[#888] hover:text-[#444] text-2xl font-bold focus:outline-none" aria-label="Close">&times;</button>
+            <div className="text-3xl font-bold text-[#1c788c] text-center font-poppins mb-2">Payment done</div>
+            <div className="text-5xl mb-4">💸</div>
+            <div className="text-base text-gray-700 text-center">Thank you for your purchase!</div>
           </div>
         </div>
       )}

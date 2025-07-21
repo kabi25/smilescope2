@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { useContext } from 'react';
 
 const quickActions = [
   {
@@ -104,8 +103,6 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
   const [tip, setTip] = useState('');
-  // Get sidebar collapsed state from context or prop if available
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   useEffect(() => {
     setMounted(true);
@@ -160,23 +157,21 @@ export default function Home() {
           <div className="w-full flex-1 flex items-center justify-center" style={{minHeight: '220px'}}>
             <div className="grid grid-cols-2 grid-rows-2 gap-6 place-items-center">
               {/* Teachable Machine Card */}
-              <a href="https://teachablemachine.withgoogle.com/models/gtpl7P1SP/" target="_blank" rel="noopener noreferrer" className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+              <a href="https://teachablemachine.withgoogle.com/models/gtpl7P1SP/" target="_blank" rel="noopener noreferrer" className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Laptop size={36} className="mb-1 text-white" />
                 <span className="text-white font-bold mt-1">AI Model</span>
               </a>
               {/* Appointments Card */}
-              <button onClick={() => router.push('/appointments')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+              <button onClick={() => router.push('/appointments')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Calendar size={36} className="mb-1 text-white" />
               </button>
               {/* Camera Card (moved) */}
-              <button onClick={() => router.push('/camera')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+              <button onClick={() => router.push('/camera')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Camera size={36} className="mb-1 text-white" />
               </button>
               {/* Smile's Note Card */}
-              <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-64 md:w-80 cursor-default shadow-md p-0">
-                {sidebarCollapsed && (
-                  <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
-                )}
+              <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-default shadow-md p-0">
+                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
                 <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
               </div>
             </div>
