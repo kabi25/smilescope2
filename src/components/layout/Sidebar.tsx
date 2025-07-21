@@ -1,8 +1,7 @@
 "use client"
-import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Home, User, Settings, Camera, MessageSquare, Calendar, Gift, Info } from 'lucide-react';
+import { Menu, X, Home, User, Camera, MessageSquare, Calendar, Gift, Info } from 'lucide-react';
 import Image from 'next/image';
 
 const navigationItems = [

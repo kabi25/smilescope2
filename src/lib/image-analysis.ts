@@ -29,12 +29,12 @@ export async function analyzeDentalImage(imageData: string): Promise<DentalAnaly
 async function performImageAnalysis(imageData: string): Promise<DentalAnalysis> {
   // Simulate analyzing image characteristics
   const conditions: DentalCondition[] = [];
-  let overallConfidence = 0.8;
+  const overallConfidence = 0.8;
   let urgency: 'low' | 'medium' | 'high' = 'low';
   const recommendations: string[] = [];
   
   // Simulate detection of common dental issues
-  const detectedIssues = await simulateImageDetection(imageData);
+  const detectedIssues = await simulateImageDetection();
   
   // Analyze for cavities (dark spots, holes)
   if (detectedIssues.darkSpots > 0) {
@@ -146,7 +146,7 @@ async function performImageAnalysis(imageData: string): Promise<DentalAnalysis> 
 }
 
 // Simulate actual image detection (would be replaced with real CV/ML model)
-async function simulateImageDetection(imageData: string) {
+async function simulateImageDetection() {
   // Simulate analyzing image characteristics
   // In a real implementation, this would use computer vision to detect:
   // - Dark spots (potential cavities)

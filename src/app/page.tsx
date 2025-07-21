@@ -95,7 +95,7 @@ export default function Home() {
             </a>
             {/* Smile's Note Card */}
             <div className="bg-[#edd1d1] rounded-2xl flex flex-col items-center justify-center h-36 md:h-40 text-lg md:text-xl font-bold font-poppins p-2 text-center shadow-md">
-              <div className="mb-1">SMILE'S NOTE</div>
+              <div className="mb-1">SMILE&apos;S NOTE</div>
               <div className="text-base font-normal font-nunito">{tip}</div>
             </div>
           </div>
