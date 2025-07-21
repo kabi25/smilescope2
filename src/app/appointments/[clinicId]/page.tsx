@@ -3,12 +3,12 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useState } from 'react';
 import Image from 'next/image';
-import { clinics } from '../page';
+import { Clinics } from '../clinics';
 
 export default function ClinicBookingPage() {
   const router = useRouter();
   const { clinicId } = useParams();
-  const clinic = clinics.find((c: { id: string }) => c.id === clinicId);
+  const clinic = Clinics.find((c: { id: string }) => c.id === clinicId);
   const [selectedService, setSelectedService] = useState('');
   const [form, setForm] = useState({
     name: '',

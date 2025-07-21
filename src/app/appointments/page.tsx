@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Clinics } from './clinics';
 
 interface AppointmentForm {
   name: string;
@@ -14,67 +15,6 @@ interface AppointmentForm {
   urgency: 'low' | 'medium' | 'high';
   notes: string;
 }
-
-interface Clinic {
-  id: string;
-  name: string;
-  hours: string;
-  address: string;
-  logo: string;
-  services: string[];
-}
-
-export const clinics: Clinic[] = [
-  {
-    id: 'alpha',
-    name: 'Alpha Dental Specialists Centre/Pusat Pakar Pergigian Alpha Dental',
-    hours: 'Mon-Sun 9AM - 6PM',
-    address: '7 (Ground Floor), Jalan Serampang, Taman Sri Tebrau, 80050 Johor Bahru, Johor.',
-    logo: '/alpha dental.jpg',
-    services: [
-      'Braces by Specialist',
-      'Clear Aligner Invisalign by Specialist',
-      'Root Canal Treatment by Specialist',
-      'Gum Treatment',
-      '3D Intraoral Scanning',
-      'Same-Day Crown by Specialist',
-      'Ceramic Crown & Bridge by Specialist',
-      'Veneers by Specialist',
-      'Teeth Whitening',
-      'Minor Oral Surgery',
-      'Wisdom Tooth Surgery',
-      'Dentures by Specialist',
-      'Dental Implant by Specialist',
-      'Laser Treatment',
-      'Children Dentistry',
-      'Preventive Treatment',
-      'Tooth Filling',
-      'Scaling & Polishing',
-      'Tooth Extraction',
-    ],
-  },
-  {
-    id: 'smilecv',
-    name: 'SmileCV Dental Clinic',
-    hours: 'Sunday- Friday 8AM - 7PM\nSaturdays and Public Holidays are closed',
-    address: '100, St Mary Street, Convent, 81100 Johor Bahru, Johor.',
-    logo: '/cvDental.jpg',
-    services: [
-      'Teeth Whitening',
-      'Minor Oral Surgery',
-      'Wisdom Tooth Surgery',
-      'Dentures by Specialist',
-      'Dental Implant by Specialist',
-      'Laser Treatment',
-      'Children Dentistry',
-      'Preventive Treatment',
-      'Tooth Filling',
-      'Scaling & Polishing',
-      'Tooth Extraction',
-    ],
-  },
-];
-
 
 export default function AppointmentsPage() {
   const router = useRouter();
@@ -97,7 +37,7 @@ export default function AppointmentsPage() {
     const urgency = urlParams.get('urgency') as 'low' | 'medium' | 'high';
     
     if (reason) {
-      setForm(prev => ({
+      setForm((prev: AppointmentForm) => ({
         ...prev,
         reason: decodeURIComponent(reason),
         urgency: urgency || 'low'
@@ -147,7 +87,7 @@ export default function AppointmentsPage() {
       <div className="max-w-3xl mx-auto">
         <h1 className="text-5xl font-bold mb-10 text-[#1c788c]">Appointment</h1>
         <div className="flex flex-col gap-8">
-          {clinics.map((clinic, idx) => (
+          {Clinics.map((clinic, idx) => (
             <div key={clinic.id}>
               <div
                 className="bg-white border border-gray-200 rounded-3xl flex flex-row items-center w-full py-8 px-6 shadow-md cursor-pointer hover:bg-[#eaf6fa] transition"
