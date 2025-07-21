@@ -13,12 +13,26 @@ interface Message {
   actions?: ActionButton[];
 }
 
-interface ActionButton {
-  id: string;
-  label: string;
-  action: 'book-appointment' | 'learn-more' | 'upload-image';
-  data?: any;
-}
+// Replace ActionButton interface with a discriminated union for better type safety
+type ActionButton =
+  | {
+      id: string;
+      label: string;
+      action: 'book-appointment';
+      data: { reason: string; urgency: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'learn-more';
+      data: { topic: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'upload-image';
+      data?: undefined;
+    };
 
 interface AIResponse {
   message: string;
@@ -37,7 +51,8 @@ export default function SmileChatPage() {
         {
           id: 'upload-demo',
           label: 'Upload Dental Photo',
-          action: 'upload-image'
+          action: 'upload-image',
+          data: undefined
         }
       ]
     }
@@ -48,6 +63,13 @@ export default function SmileChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Store scan/photo and analysis in localStorage
+  const storeScanHistory = (image: string | undefined, analysis: string) => {
+    const history = JSON.parse(localStorage.getItem('smilescope_scan_history') || '[]');
+    history.push({ image, analysis, timestamp: new Date().toISOString() });
+    localStorage.setItem('smilescope_scan_history', JSON.stringify(history));
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -57,10 +79,10 @@ export default function SmileChatPage() {
   }, [messages]);
 
   // Enhanced AI analysis function with actual image analysis
-  const analyzeDentalImageWithAI = async (imageData: string, userQuestion?: string): Promise<AIResponse> => {
+  const analyzeDentalImageWithAI = async ( userQuestion?: string): Promise<AIResponse> => {
     try {
       // Use the new image analysis system
-      const analysis = await analyzeDentalImage(imageData);
+      const analysis = await analyzeDentalImage();
       
       // Generate message based on analysis and user question
       const message = generateAnalysisMessage(analysis, userQuestion);
@@ -82,7 +104,8 @@ export default function SmileChatPage() {
           {
             id: 'upload-retry',
             label: 'Upload Another Photo',
-            action: 'upload-image'
+            action: 'upload-image',
+            data: undefined
           }
         ]
       };
@@ -110,7 +133,7 @@ export default function SmileChatPage() {
 
       if (selectedImage) {
         // Analyze the uploaded image with user's question
-        aiResponse = await analyzeDentalImageWithAI(selectedImage, inputMessage);
+        aiResponse = await analyzeDentalImageWithAI( inputMessage);
       } else {
         // Handle text-only questions about dental health
         aiResponse = await handleTextOnlyQuestion(inputMessage);
@@ -155,7 +178,8 @@ export default function SmileChatPage() {
           {
             id: 'upload-hygiene',
             label: 'Upload Photo for Analysis',
-            action: 'upload-image'
+            action: 'upload-image',
+            data: undefined
           },
           {
             id: 'book-cleaning',
@@ -174,7 +198,8 @@ export default function SmileChatPage() {
           {
             id: 'upload-cavity-check',
             label: 'Upload Photo for Cavity Check',
-            action: 'upload-image'
+            action: 'upload-image',
+            data: undefined
           },
           {
             id: 'book-cavity-exam',
@@ -266,7 +291,7 @@ export default function SmileChatPage() {
     switch (action.action) {
       case 'book-appointment':
         // Navigate to appointments page with pre-filled data
-        window.location.href = `/appointments?reason=${encodeURIComponent(action.data?.reason || 'Dental consultation')}`;
+        window.location.href = `/appointments?reason=${encodeURIComponent(action.data.reason || 'Dental consultation')}`;
         break;
       case 'learn-more':
         // Show detailed information
@@ -278,7 +303,7 @@ export default function SmileChatPage() {
     }
   };
 
-  const handleLearnMore = (data: any) => {
+  const handleLearnMore = (data: { topic: string }) => {
     const learnMoreMessage: Message = {
       id: Date.now().toString(),
       type: 'assistant',
@@ -313,251 +338,19 @@ export default function SmileChatPage() {
       braces: `😬 Braces & Orthodontics\nBraces straighten teeth and fix bites—hello, confident smile!\n\nTips for success:\n- Brush and floss carefully around wires\n- Avoid sticky or hard foods\n- Wear your rubber bands as directed\n\nFun fact: The results are worth it! Straight teeth are easier to clean and look amazing.`,
       normal: `🎉 Healthy Smile\nYour teeth and gums look great! Keep brushing, flossing, and smiling every day.`
     };
-    
-    return info[conditionType] || `I'd be happy to provide detailed information about this dental condition. Please upload a photo so I can give you specific, personalized advice! 📸`;
-  };
-
+    return info[conditionType] || 'Ask me about a specific dental topic or upload a photo for a personalized analysis.';
+  }
   const getConditionName = (type: string): string => {
     const names: { [key: string]: string } = {
-      cavity: 'Cavities/Tooth Decay',
+      cavity: 'Cavity',
       gum_disease: 'Gum Disease',
       staining: 'Tooth Staining',
-      chipped: 'Chipped/Damaged Teeth',
+      chipped: 'Chipped Teeth',
       sensitivity: 'Tooth Sensitivity',
-      wisdom_teeth: 'Wisdom Teeth Issues',
-      braces: 'Orthodontic Treatment',
-      normal: 'Normal Dental Health'
+      wisdom_teeth: 'Wisdom Teeth',
+      braces: 'Braces',
+      normal: 'Healthy Smile'
     };
     return names[type] || type;
   };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const removeSelectedImage = () => {
-    setSelectedImage(undefined);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
-
-  // After AI analysis, store scan/photo and analysis in localStorage
-  const storeScanHistory = (image: string | undefined, analysis: string) => {
-    if (!image) return;
-    const history = JSON.parse(localStorage.getItem('smilescope_scan_history') || '[]');
-    const scanNumber = history.length + 1;
-    history.push({
-      scanNumber,
-      image,
-      analysis,
-      date: new Date().toISOString()
-    });
-    localStorage.setItem('smilescope_scan_history', JSON.stringify(history));
-  };
-
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <Bot className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold text-gray-900">SmileChat AI</h1>
-              <p className="text-sm text-gray-500">Your AI Dental Assistant</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => window.location.href = '/camera'}
-              className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
-              title="Take Photo"
-            >
-              <Camera className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => window.location.href = '/appointments'}
-              className="p-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
-              title="Book Appointment"
-            >
-              <Calendar className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
-              <div className={`flex max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                {/* Avatar */}
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                  message.type === 'user' ? 'bg-blue-500 ml-3' : 'bg-gray-200 mr-3'
-                }`}>
-                  {message.type === 'user' ? (
-                    <User className="w-4 h-4 text-white" />
-                  ) : (
-                    <Bot className="w-4 h-4 text-gray-600" />
-                  )}
-                </div>
-
-                {/* Message Content */}
-                <div className={`flex flex-col ${message.type === 'user' ? 'items-end' : 'items-start'}`}>
-                  <div className={`rounded-lg px-4 py-3 ${
-                    message.type === 'user' 
-                      ? 'bg-blue-500 text-white' 
-                      : 'bg-white border border-gray-200 text-gray-900'
-                  }`}>
-                    {message.image && (
-                      <div className="mb-3">
-                        <img
-                          src={message.image}
-                          alt="Uploaded dental photo"
-                          className="max-w-full h-48 object-cover rounded-lg"
-                        />
-                      </div>
-                    )}
-                    <p className="whitespace-pre-wrap">{message.content}</p>
-                  </div>
-
-                  {/* Action Buttons */}
-                  {message.actions && message.actions.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {message.actions.map((action) => (
-                        <button
-                          key={action.id}
-                          onClick={() => handleActionClick(action)}
-                          className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                            action.action === 'book-appointment'
-                              ? 'bg-green-500 text-white hover:bg-green-600'
-                              : action.action === 'learn-more'
-                              ? 'bg-blue-500 text-white hover:bg-blue-600'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          }`}
-                        >
-                          {action.action === 'book-appointment' && <Calendar className="w-4 h-4 mr-2" />}
-                          {action.action === 'learn-more' && <Info className="w-4 h-4 mr-2" />}
-                          {action.action === 'upload-image' && <Upload className="w-4 h-4 mr-2" />}
-                          {action.label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-
-                  <span className="text-xs text-gray-500 mt-1">
-                    {message.timestamp.toLocaleTimeString()}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          {/* Loading Indicator */}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="flex max-w-[80%]">
-                <div className="flex-shrink-0 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center mr-3">
-                  <Bot className="w-4 h-4 text-gray-600" />
-                </div>
-                <div className="bg-white border border-gray-200 rounded-lg px-4 py-3">
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div ref={messagesEndRef} />
-        </div>
-      </div>
-
-      {/* Input Area */}
-      <div className="bg-white border-t border-gray-200 px-4 py-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Selected Image Preview */}
-          {selectedImage && (
-            <div className="mb-3 relative inline-block">
-              <img
-                src={selectedImage}
-                alt="Selected"
-                className="max-w-32 h-24 object-cover rounded-lg border"
-              />
-              <button
-                onClick={removeSelectedImage}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-
-          <div className="flex items-end space-x-3">
-            <div className="flex-1">
-              <textarea
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Type your message or upload a dental photo..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={1}
-                style={{ minHeight: '48px', maxHeight: '120px' }}
-              />
-            </div>
-            
-            <div className="flex space-x-2">
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="p-3 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
-                title="Upload Image"
-              >
-                <ImageIcon className="w-5 h-5" />
-              </button>
-              
-              <button
-                onClick={handleSendMessage}
-                disabled={(!inputMessage.trim() && !selectedImage) || isLoading}
-                className="p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                title="Send Message"
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-        </div>
-      </div>
-    </div>
-  );
-} 
+}
