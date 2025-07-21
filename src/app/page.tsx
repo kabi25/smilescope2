@@ -55,9 +55,11 @@ export default function Home() {
     return '';
   }
 
-  function handleCalendarChange(value: Date | Date[] | null) {
+  function handleCalendarChange(value: Date | (Date | null)[] | null) {
     if (Array.isArray(value)) {
-      setSelectedDate(value[0] ?? new Date());
+      // react-calendar can return [Date | null, Date | null] for ranges
+      const firstDate = value.find((d): d is Date => d instanceof Date);
+      setSelectedDate(firstDate ?? new Date());
     } else if (value instanceof Date) {
       setSelectedDate(value);
     }
@@ -114,7 +116,7 @@ export default function Home() {
         <div className="w-full bg-[#aedae8] rounded-2xl p-4 flex flex-col items-center shadow-md">
           <div className="text-lg font-bold font-poppins mb-2 text-[#1c788c]">Appointments</div>
           <ReactCalendar
-            onChange={(value: any) => handleCalendarChange(value)}
+            onChange={handleCalendarChange}
             value={selectedDate}
             tileClassName={tileClassName}
             className="w-full font-nunito rounded-2xl border-none"
