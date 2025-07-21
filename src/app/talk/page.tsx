@@ -57,7 +57,7 @@ export default function TalkToDentistPage() {
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-5xl font-bold mb-10 text-[#1c788c] text-center">Talk to Dentist</h1>
+        <h1 className="text-5xl font-bold mb-10 text-[#1c788c]">Talk to Dentist</h1>
         {!selectedDentist ? (
           <div className="flex flex-col gap-8">
             {dentists.map((dentist) => (

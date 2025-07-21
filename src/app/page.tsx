@@ -1,13 +1,14 @@
 'use client'
 
 import Link from 'next/link';
-import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star, Laptop, Gamepad2, Gift } from 'lucide-react';
+import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star, Laptop, Gamepad2, Gift, Globe } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { useContext } from 'react';
 
 const quickActions = [
   {
@@ -103,6 +104,9 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
   const [tip, setTip] = useState('');
+  // Get sidebar collapsed state from context or prop if available
+  // Remove: const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  // In the Smile's Note card, always show the label for now (or use a global context if you want dynamic behavior).
 
   useEffect(() => {
     setMounted(true);
@@ -140,6 +144,9 @@ export default function Home() {
   const selectedDateStr = selectedDate ? toLocalDateString(selectedDate) : '';
   const bookingDetails = mounted && selectedDateStr ? getBookingDetails(selectedDateStr) : null;
 
+  // Placeholder for sidebar collapsed state (replace with context/prop if available)
+  const sidebarCollapsed = true; // Set to false to simulate expanded
+
   return (
     <div className="flex flex-row min-h-screen max-h-screen overflow-hidden bg-[#aedae8] font-nunito">
       {/* Main Content */}
@@ -155,24 +162,24 @@ export default function Home() {
           </div>
           {/* Feature Grid */}
           <div className="w-full flex-1 flex items-center justify-center" style={{minHeight: '220px'}}>
-            <div className="grid grid-cols-2 grid-rows-2 gap-6 place-items-center">
-            {/* Camera Card */}
-            <button onClick={() => router.push('/camera')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
-              <Camera size={36} className="mb-1 text-white" />
-            </button>
-            {/* Appointments Card */}
-            <button onClick={() => router.push('/appointments')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
-              <Calendar size={36} className="mb-1 text-white" />
-            </button>
-            {/* Offers Card */}
-            <button onClick={() => router.push('/offers')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
-              <Gift size={36} className="mb-1 text-white" />
-            </button>
-            {/* Smile's Note Card */}
-            <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-default shadow-md p-0">
-              <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
-              <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
-            </div>
+            <div className={`grid grid-cols-2 grid-rows-2 gap-4 place-items-center`}>
+              {/* AI Camera Card */}
+              <button onClick={() => router.push('/camera')} className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
+                <Camera size={48} className="text-white" />
+              </button>
+              {/* Smilescope Website Card */}
+              <a href="https://smilescopebiz.wixsite.com/smilescope-4" target="_blank" rel="noopener noreferrer" className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
+                <Laptop size={48} className="text-white" />
+              </a>
+              {/* Minigame Card */}
+              <a href="https://scratch.mit.edu/projects/1061926573" target="_blank" rel="noopener noreferrer" className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-pointer hover:bg-[#86c4d7] transition shadow-md`}>
+                <Gamepad2 size={48} className="text-white" />
+              </a>
+              {/* Smile's Note Card */}
+              <div className={`bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-20 md:h-24 ${sidebarCollapsed ? 'w-56 md:w-64' : 'w-40 md:w-48'} cursor-default shadow-md p-0`}>
+                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE'S NOTE</div>
+                <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
+              </div>
             </div>
           </div>
         </div>

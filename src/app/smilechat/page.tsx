@@ -395,7 +395,7 @@ export default function SmileChatPage() {
               <img src="/smilechat logo.jpg" alt="SmileChat Logo" className="w-12 h-12 rounded-full object-cover" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">SmileChat AI</h1>
+              <h1 className="text-2xl font-bold text-[#1c788c]">SmileChat AI</h1>
               <p className="text-sm text-gray-500">Your AI Dental Assistant</p>
             </div>
           </div>

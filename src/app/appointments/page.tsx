@@ -188,7 +188,7 @@ export default function AppointmentsPage() {
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-5xl font-bold mb-10">Appointment</h1>
+        <h1 className="text-5xl font-bold mb-10 text-[#1c788c]">Appointment</h1>
         <div className="flex flex-col gap-8">
           {clinics.map((clinic, idx) => (
             <div key={clinic.id}>
