@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Camera, Repeat, Image as ImageIcon, Settings, Monitor, Smartphone, Video, ChevronDown, Bot } from 'lucide-react';
-import Image from 'next/image';
+import { Camera, Repeat, Image as ImageIcon, Monitor, Smartphone, Video, ChevronDown } from 'lucide-react';
 
 interface CameraDevice {
   deviceId: string;
@@ -14,7 +13,6 @@ export default function CameraPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
-  const [isFrontCamera, setIsFrontCamera] = useState(true);
   const [photos, setPhotos] = useState<string[]>([]);
   const [availableDevices, setAvailableDevices] = useState<CameraDevice[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<string>('');

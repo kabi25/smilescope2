@@ -1,16 +1,7 @@
 'use client';
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import ClientLayout from './ClientLayout';
-
-const metadata: Metadata = {
-  title: 'Smilescope - Dental Camera Tool',
-  description: 'A mobile-first dental camera application for dental health monitoring',
-  icons: {
-    icon: '/favicon.ico',
-  },
-};
 
 const inter = Inter({ subsets: ['latin'] });
 

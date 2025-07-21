@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { Send, Image as ImageIcon, Camera, FileText, Calendar, Info, X, Upload, Bot, User } from 'lucide-react';
+import { Send, Image as ImageIcon, Camera, Calendar, Info, X, Upload, Bot, User } from 'lucide-react';
 import { analyzeDentalImage, generateAnalysisMessage, generateActionButtons } from '@/lib/image-analysis';
-import Image from 'next/image';
+
 
 interface Message {
   id: string;
@@ -14,12 +14,26 @@ interface Message {
   actions?: ActionButton[];
 }
 
-interface ActionButton {
-  id: string;
-  label: string;
-  action: 'book-appointment' | 'learn-more' | 'upload-image';
-  data?: any;
-}
+// Replace ActionButton interface with a discriminated union for better type safety
+type ActionButton =
+  | {
+      id: string;
+      label: string;
+      action: 'book-appointment';
+      data: { reason: string; urgency: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'learn-more';
+      data: { topic: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'upload-image';
+      data?: undefined;
+    };
 
 interface AIResponse {
   message: string;
@@ -58,10 +72,10 @@ export default function SmileChatPage() {
   }, [messages]);
 
   // Enhanced AI analysis function with actual image analysis
-  const analyzeDentalImageWithAI = async (imageData: string, userQuestion?: string): Promise<AIResponse> => {
+  const analyzeDentalImageWithAI = async ( userQuestion?: string): Promise<AIResponse> => {
     try {
       // Use the new image analysis system
-      const analysis = await analyzeDentalImage(imageData);
+      const analysis = await analyzeDentalImage();
       
       // Generate message based on analysis and user question
       const message = generateAnalysisMessage(analysis, userQuestion);
@@ -111,7 +125,7 @@ export default function SmileChatPage() {
 
       if (selectedImage) {
         // Analyze the uploaded image with user's question
-        aiResponse = await analyzeDentalImageWithAI(selectedImage, inputMessage);
+        aiResponse = await analyzeDentalImageWithAI( inputMessage);
       } else {
         // Handle text-only questions about dental health
         aiResponse = await handleTextOnlyQuestion(inputMessage);
@@ -279,7 +293,8 @@ export default function SmileChatPage() {
     }
   };
 
-  const handleLearnMore = (data: any) => {
+  // Update handleLearnMore to accept the correct type
+  const handleLearnMore = (data: { topic: string }) => {
     const learnMoreMessage: Message = {
       id: Date.now().toString(),
       type: 'assistant',
@@ -332,19 +347,19 @@ export default function SmileChatPage() {
     return names[type] || type;
   };
 
-  const getDetailedInfo = (topic: string): string => {
-    const infoMap: { [key: string]: string } = {
-      cavity: `🦷 Cavities & Tooth Decay\nCavities are tiny holes in your teeth caused by sneaky bacteria. They love sugar!\n\nHow to spot them:\n- Sensitive to sweets, hot, or cold?\n- See a dark spot or hole?\n- Toothache that won't quit?\n\nWhat to do:\n- Brush and floss every day (bacteria hate that!)\n- Visit your dentist for a quick fix (fillings are fast!)\n- Don't wait—cavities only get bigger!\n\nFun fact: Early cavities are super easy to treat. Catch them early for a happy, pain-free smile! 😁`,
-      gum_disease: `🪥 Gum Disease\nGum disease starts quietly—redness, swelling, or bleeding when you brush.\n\nEarly signs:\n- Gums bleed when brushing or flossing\n- Bad breath that won't go away\n- Gums look puffy or feel sore\n\nHow to fight back:\n- Brush gently and floss daily\n- See your dentist for a cleaning\n- Don't ignore bleeding—healthy gums don't bleed!\n\nDid you know? Early gum disease is totally reversible. Your gums will thank you! 🦷`,
-      staining: `✨ Tooth Staining\nStains are like little souvenirs from coffee, tea, or soda. They don't hurt, but they can dull your smile.\n\nHow to brighten up:\n- Brush after dark drinks or use a straw\n- Try whitening toothpaste or professional cleaning\n- Avoid smoking for a whiter smile\n\nPro tip: Some stains need a dentist's touch. Ask about safe whitening options! 😁`,
-      chipped: `🦷 Chipped or Damaged Teeth\nOops! Bit something hard? Chips happen.\n\nWhat to watch for:\n- Sharp or rough edge on a tooth\n- Pain when biting or chewing\n- A piece of tooth missing\n\nWhat to do:\n- See your dentist soon (small chips are easy to fix!)\n- Avoid chewing on that side\n- Save any broken pieces if you can\n\nFun fact: Dentists can fix chips with bonding, fillings, or crowns—your smile will look good as new!`,
-      sensitivity: `🥶 Tooth Sensitivity\nDoes ice cream make you wince? Sensitivity means your teeth are sending you a message.\n\nCommon causes:\n- Worn enamel from brushing too hard\n- Gum recession exposing roots\n- Cavities or cracks\n\nHow to soothe:\n- Use toothpaste for sensitive teeth\n- Brush gently with a soft brush\n- Avoid super hot or cold foods\n\nGood news: Most sensitivity is easy to treat. If it sticks around, see your dentist!`,
-      wisdom_teeth: `🦷 Wisdom Teeth\nWisdom teeth are your last set of molars—sometimes they cause trouble!\n\nSigns they need attention:\n- Pain or swelling at the back of your mouth\n- Trouble opening wide\n- Crowding or shifting teeth\n\nWhat to do:\n- See your dentist for an x-ray\n- Removal is common and quick\n- Most people feel better in a few days\n\nDid you know? Not everyone needs their wisdom teeth out, but regular checkups help you stay ahead!`,
-      braces: `😬 Braces & Orthodontics\nBraces straighten teeth and fix bites—hello, confident smile!\n\nTips for success:\n- Brush and floss carefully around wires\n- Avoid sticky or hard foods\n- Wear your rubber bands as directed\n\nFun fact: The results are worth it! Straight teeth are easier to clean and look amazing.`,
-      normal: `🎉 Healthy Smile\nYour teeth and gums look great! Keep brushing, flossing, and smiling every day.`
-    };
-    return infoMap[topic] || 'Ask me about a specific dental topic or upload a photo for a personalized analysis.';
-  };
+  // const getDetailedInfo = (topic: string): string => {
+  //   const infoMap: { [key: string]: string } = {
+  //     cavity: `🦷 Cavities & Tooth Decay\nCavities are tiny holes in your teeth caused by sneaky bacteria. They love sugar!\n\nHow to spot them:\n- Sensitive to sweets, hot, or cold?\n- See a dark spot or hole?\n- Toothache that won't quit?\n\nWhat to do:\n- Brush and floss every day (bacteria hate that!)\n- Visit your dentist for a quick fix (fillings are fast!)\n- Don't wait—cavities only get bigger!\n\nFun fact: Early cavities are super easy to treat. Catch them early for a happy, pain-free smile! 😁`,
+  //     gum_disease: `🪥 Gum Disease\nGum disease starts quietly—redness, swelling, or bleeding when you brush.\n\nEarly signs:\n- Gums bleed when brushing or flossing\n- Bad breath that won't go away\n- Gums look puffy or feel sore\n\nHow to fight back:\n- Brush gently and floss daily\n- See your dentist for a cleaning\n- Don't ignore bleeding—healthy gums don't bleed!\n\nDid you know? Early gum disease is totally reversible. Your gums will thank you! 🦷`,
+  //     staining: `✨ Tooth Staining\nStains are like little souvenirs from coffee, tea, or soda. They don't hurt, but they can dull your smile.\n\nHow to brighten up:\n- Brush after dark drinks or use a straw\n- Try whitening toothpaste or professional cleaning\n- Avoid smoking for a whiter smile\n\nPro tip: Some stains need a dentist's touch. Ask about safe whitening options! 😁`,
+  //     chipped: `🦷 Chipped or Damaged Teeth\nOops! Bit something hard? Chips happen.\n\nWhat to watch for:\n- Sharp or rough edge on a tooth\n- Pain when biting or chewing\n- A piece of tooth missing\n\nWhat to do:\n- See your dentist soon (small chips are easy to fix!)\n- Avoid chewing on that side\n- Save any broken pieces if you can\n\nFun fact: Dentists can fix chips with bonding, fillings, or crowns—your smile will look good as new!`,
+  //     sensitivity: `🥶 Tooth Sensitivity\nDoes ice cream make you wince? Sensitivity means your teeth are sending you a message.\n\nCommon causes:\n- Worn enamel from brushing too hard\n- Gum recession exposing roots\n- Cavities or cracks\n\nHow to soothe:\n- Use toothpaste for sensitive teeth\n- Brush gently with a soft brush\n- Avoid super hot or cold foods\n\nGood news: Most sensitivity is easy to treat. If it sticks around, see your dentist!`,
+  //     wisdom_teeth: `🦷 Wisdom Teeth\nWisdom teeth are your last set of molars—sometimes they cause trouble!\n\nSigns they need attention:\n- Pain or swelling at the back of your mouth\n- Trouble opening wide\n- Crowding or shifting teeth\n\nWhat to do:\n- See your dentist for an x-ray\n- Removal is common and quick\n- Most people feel better in a few days\n\nDid you know? Not everyone needs their wisdom teeth out, but regular checkups help you stay ahead!`,
+  //     braces: `😬 Braces & Orthodontics\nBraces straighten teeth and fix bites—hello, confident smile!\n\nTips for success:\n- Brush and floss carefully around wires\n- Avoid sticky or hard foods\n- Wear your rubber bands as directed\n\nFun fact: The results are worth it! Straight teeth are easier to clean and look amazing.`,
+  //     normal: `🎉 Healthy Smile\nYour teeth and gums look great! Keep brushing, flossing, and smiling every day.`
+  //   };
+  //   return infoMap[topic] || 'Ask me about a specific dental topic or upload a photo for a personalized analysis.';
+  // };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

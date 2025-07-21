@@ -15,26 +15,26 @@ export interface DentalCondition {
 }
 
 // Simulated image analysis function that would be replaced with actual AI/ML model
-export async function analyzeDentalImage(imageData: string): Promise<DentalAnalysis> {
+export async function analyzeDentalImage(): Promise<DentalAnalysis> {
   // Simulate processing time
   await new Promise(resolve => setTimeout(resolve, 1500));
   
   // This would be replaced with actual computer vision analysis
   // For now, we'll simulate analysis based on image characteristics
   
-  const analysis = await performImageAnalysis(imageData);
+  const analysis = await performImageAnalysis();
   return analysis;
 }
 
-async function performImageAnalysis(imageData: string): Promise<DentalAnalysis> {
+async function performImageAnalysis(): Promise<DentalAnalysis> {
   // Simulate analyzing image characteristics
   const conditions: DentalCondition[] = [];
-  let overallConfidence = 0.8;
+  const overallConfidence = 0.8;
   let urgency: 'low' | 'medium' | 'high' = 'low';
   const recommendations: string[] = [];
   
   // Simulate detection of common dental issues
-  const detectedIssues = await simulateImageDetection(imageData);
+  const detectedIssues = await simulateImageDetection();
   
   // Analyze for cavities (dark spots, holes)
   if (detectedIssues.darkSpots > 0) {
@@ -146,7 +146,7 @@ async function performImageAnalysis(imageData: string): Promise<DentalAnalysis> 
 }
 
 // Simulate actual image detection (would be replaced with real CV/ML model)
-async function simulateImageDetection(imageData: string) {
+async function simulateImageDetection() {
   // Simulate analyzing image characteristics
   // In a real implementation, this would use computer vision to detect:
   // - Dark spots (potential cavities)
@@ -252,19 +252,31 @@ function getConditionName(type: string): string {
   return names[type] || type;
 }
 
+// Import or redefine ActionButton type for type safety
+
+type ActionButton =
+  | {
+      id: string;
+      label: string;
+      action: 'book-appointment';
+      data: { reason: string; urgency: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'learn-more';
+      data: { topic: string };
+    }
+  | {
+      id: string;
+      label: string;
+      action: 'upload-image';
+      data: undefined;
+    };
+
 // Generate action buttons based on analysis - only show booking if there are issues
-export function generateActionButtons(analysis: DentalAnalysis): Array<{
-  id: string;
-  label: string;
-  action: 'book-appointment' | 'learn-more' | 'upload-image';
-  data?: any;
-}> {
-  const actions: Array<{
-    id: string;
-    label: string;
-    action: 'book-appointment' | 'learn-more' | 'upload-image';
-    data?: any;
-  }> = [];
+export function generateActionButtons(analysis: DentalAnalysis): ActionButton[] {
+  const actions: ActionButton[] = [];
   
   // Only show booking button if there are actual issues (not normal)
   const hasIssues = analysis.conditions.some(c => c.type !== 'normal');
@@ -275,7 +287,7 @@ export function generateActionButtons(analysis: DentalAnalysis): Array<{
       actions.push({
         id: 'book-analysis',
         label: `Book ${analysis.urgency === 'high' ? 'Urgent ' : ''}Appointment`,
-        action: 'book-appointment' as const,
+        action: 'book-appointment',
         data: { 
           reason: getConditionName(primaryCondition.type),
           urgency: analysis.urgency 
@@ -286,7 +298,7 @@ export function generateActionButtons(analysis: DentalAnalysis): Array<{
       actions.push({
         id: 'learn-condition',
         label: `Learn More About ${getConditionName(primaryCondition.type)}`,
-        action: 'learn-more' as const,
+        action: 'learn-more',
         data: { topic: primaryCondition.type }
       });
     }
@@ -295,7 +307,8 @@ export function generateActionButtons(analysis: DentalAnalysis): Array<{
     actions.push({
       id: 'upload-another',
       label: 'Upload Another Photo',
-      action: 'upload-image' as const
+      action: 'upload-image',
+      data: undefined
     });
   }
   
@@ -304,7 +317,8 @@ export function generateActionButtons(analysis: DentalAnalysis): Array<{
     actions.push({
       id: 'upload-better',
       label: 'Upload Better Photo',
-      action: 'upload-image' as const
+      action: 'upload-image',
+      data: undefined
     });
   }
   

@@ -1,11 +1,10 @@
 'use client'
 
-import Link from 'next/link';
-import { Camera, Calendar, MessageSquare, ChevronRight, Activity, Users, Star, Laptop, Gamepad2, Gift, Globe } from 'lucide-react';
+import { Camera } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import 'react-calendar/dist/Calendar.css';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useContext } from 'react';
@@ -99,8 +98,6 @@ function isPastDate(date: Date) {
 
 export default function Home() {
   const { user } = useAuth();
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
   const [tip, setTip] = useState('');
@@ -109,7 +106,6 @@ export default function Home() {
   // In the Smile's Note card, always show the label for now (or use a global context if you want dynamic behavior).
 
   useEffect(() => {
-    setMounted(true);
     setSelectedDate(new Date());
     setAppointments(getAppointments());
     setTip(dentalTips[Math.floor(Math.random() * dentalTips.length)]);
@@ -133,9 +129,11 @@ export default function Home() {
     return '';
   }
 
-  function handleCalendarChange(value: Date | Date[] | null) {
+  function handleCalendarChange(value: Date | (Date | null)[] | null) {
     if (Array.isArray(value)) {
-      setSelectedDate(value[0] ?? new Date());
+      // react-calendar can return [Date | null, Date | null] for ranges
+      const firstDate = value.find((d): d is Date => d instanceof Date);
+      setSelectedDate(firstDate ?? new Date());
     } else if (value instanceof Date) {
       setSelectedDate(value);
     }
