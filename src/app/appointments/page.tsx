@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import {  AlertCircle, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -76,13 +75,6 @@ export const clinics: Clinic[] = [
   },
 ];
 
-function saveAppointment(date: string) {
-  const appointments = JSON.parse(localStorage.getItem('smilescope_appointments') || '[]');
-  if (!appointments.includes(date)) {
-    appointments.push(date);
-    localStorage.setItem('smilescope_appointments', JSON.stringify(appointments));
-  }
-}
 
 export default function AppointmentsPage() {
   const router = useRouter();

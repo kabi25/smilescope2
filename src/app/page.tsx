@@ -1,6 +1,6 @@
 'use client'
 
-import { Camera, Calendar, MessageSquare, Activity, Users, Star, Laptop } from 'lucide-react';
+import { Camera, Calendar, Laptop } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -103,7 +103,7 @@ export default function Home() {
           </div>
           {/* Quote */}
           <div className="text-2xl md:text-3xl font-bold text-center mb-2 font-poppins text-[#1c788c]" style={{marginTop: '-1.5rem'}}>
-            "A confident smile is the best accessory you can wear."
+          &quot;A confident smile is the best accessory you can wear.&quot;
           </div>
           {/* Feature Grid */}
           <div className="w-full flex-1 flex items-center justify-center" style={{minHeight: '220px'}}>

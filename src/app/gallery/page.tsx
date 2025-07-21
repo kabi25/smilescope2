@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Trash2, X } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface ScanHistory {
