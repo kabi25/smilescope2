@@ -112,20 +112,20 @@ export default function Home() {
               {/* Teachable Machine Card */}
               <a href="https://teachablemachine.withgoogle.com/models/gtpl7P1SP/" target="_blank" rel="noopener noreferrer" className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Laptop size={36} className="mb-1 text-white" />
-                <span className="text-white font-bold mt-1">AI Model Link</span>
+                <span className="text-white font-bold mt-1">AI Model</span>
               </a>
               {/* Appointments Card */}
               <Link href="https://smilescopebiz.wixsite.com/smilescope-4" target="_blank" rel="noopener noreferrer">
               <button className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Laptop2 size={36} className="mb-1 text-white" />
-                <span className="text-white font-bold mt-1">Website Link</span>
+                <span className="text-white font-bold mt-1">Website</span>
               </button>
               </Link>
               {/* Camera Card (moved) */}
               <Link href="https://scratch.mit.edu/projects/1061926573" target="_blank" rel="noopener noreferrer">
               <button className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Gamepad size={36} className="mb-1 text-white" />
-                <span className="text-white font-bold mt-1">Mini Game Link</span>
+                <span className="text-white font-bold mt-1">Mini Game</span>
               </button>
               </Link>
               {/* Smile's Note Card */}
