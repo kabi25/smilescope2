@@ -1,8 +1,7 @@
 'use client'
 
-import { Camera, Calendar, Laptop, Gamepad, Laptop2 } from 'lucide-react';
+import { Laptop, Gamepad, Laptop2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ReactCalendar from 'react-calendar';
@@ -51,7 +50,6 @@ function isPastDate(date: Date) {
 
 export default function Home() {
   const { user } = useAuth();
-  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [appointments, setAppointments] = useState<string[]>([]);
