@@ -1,12 +1,13 @@
 'use client'
 
-import { Camera, Calendar, Laptop } from 'lucide-react';
+import { Camera, Calendar, Laptop, Gamepad, Laptop2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ReactCalendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import Link from 'next/link';
 
 
 const dentalTips = [
@@ -113,21 +114,27 @@ export default function Home() {
               {/* Teachable Machine Card */}
               <a href="https://teachablemachine.withgoogle.com/models/gtpl7P1SP/" target="_blank" rel="noopener noreferrer" className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
                 <Laptop size={36} className="mb-1 text-white" />
-                <span className="text-white font-bold mt-1">AI Model</span>
+                <span className="text-white font-bold mt-1">AI Model Link</span>
               </a>
               {/* Appointments Card */}
-              <button onClick={() => router.push('/appointments')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
-                <Calendar size={36} className="mb-1 text-white" />
+              <Link href="https://smilescopebiz.wixsite.com/smilescope-4" target="_blank" rel="noopener noreferrer">
+              <button className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+                <Laptop2 size={36} className="mb-1 text-white" />
+                <span className="text-white font-bold mt-1">Website Link</span>
               </button>
+              </Link>
               {/* Camera Card (moved) */}
-              <button onClick={() => router.push('/camera')} className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
-                <Camera size={36} className="mb-1 text-white" />
+              <Link href="https://scratch.mit.edu/projects/1061926573" target="_blank" rel="noopener noreferrer">
+              <button className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-pointer hover:bg-[#86c4d7] transition shadow-md">
+                <Gamepad size={36} className="mb-1 text-white" />
+                <span className="text-white font-bold mt-1">Mini Game Link</span>
               </button>
+              </Link>
               {/* Smile's Note Card */}
               <div className="bg-[#74a8bc] rounded-2xl flex flex-col items-center justify-center h-16 md:h-20 w-44 md:w-56 cursor-default shadow-md p-0">
-                <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE&quot;S NOTE</div>
-                <div className="text-xs md:text-sm font-normal font-nunito text-white px-2" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
-              </div>
+  <div className="mb-1 text-base md:text-lg font-bold font-poppins text-white">SMILE&#39;S NOTE</div>
+  <div className="text-xs md:text-sm font-normal font-nunito text-white px-2 text-center" style={{lineHeight:1.2, maxWidth:'90%'}}>{tip}</div>
+</div>
             </div>
           </div>
         </div>
